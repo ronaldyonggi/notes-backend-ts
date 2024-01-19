@@ -32,7 +32,7 @@ app.get('/api/notes', (_req, res) => {
   return res.json(notes);
 });
 
-// GET a single resource
+// GET a single note
 app.get('/api/notes/:id', (req, res) => {
   const id  = Number(req.params.id);
   const matchedNote = notes.find(note => note.id === id);
