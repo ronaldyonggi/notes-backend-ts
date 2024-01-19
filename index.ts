@@ -4,7 +4,7 @@ dotenv.config();
 import express from 'express';
 const app  = express();
 
-const notes = [
+let notes = [
   {
     id: 1,
     content: 'HTML is easy',
