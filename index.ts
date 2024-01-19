@@ -43,6 +43,14 @@ app.get('/api/notes/:id', (req, res) => {
   }
 });
 
+// DELETE a note
+app.delete('/api:notes/:id', (req, res) => {
+  const id = Number(req.params.id);
+  // Update notes
+  notes = notes.filter(note => note.id !== id);
+  return res.status(204).end();
+})
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
