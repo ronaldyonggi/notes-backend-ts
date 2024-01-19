@@ -33,10 +33,6 @@
     "quotes": [
         "error",
         "single"
-    ],
-    "semi": [
-        "error",
-        "never"
     ]
   },
   "parser": "@typescript-eslint/parser",
