@@ -22,10 +22,12 @@ const notes = [
   }
 ];
 
+// GET home page
 app.get('/', (_req, res) => {
   return res.send('<h1>Hello World!</h1>');
 });
 
+// GET all notes
 app.get('/api/notes', (_req, res) => {
   return res.json(notes);
 });
