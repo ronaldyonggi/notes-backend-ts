@@ -46,7 +46,7 @@ app.get('/api/notes/:id', (req, res) => {
 });
 
 // DELETE a note
-app.delete('/api:notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res) => {
   const id = Number(req.params.id);
   // Update notes
   notes = notes.filter(note => note.id !== id);
