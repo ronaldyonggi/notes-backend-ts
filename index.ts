@@ -32,6 +32,17 @@ app.get('/api/notes', (_req, res) => {
   return res.json(notes);
 });
 
+// GET a single resource
+app.get('/api/notes/:id', (req, res) => {
+  const id  = Number(req.params.id);
+  const matchedNote = notes.find(note => note.id === id);
+  if (matchedNote) {
+    return res.json(matchedNote);
+  } else {
+    return res.status(404).end();
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
