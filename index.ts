@@ -51,7 +51,34 @@ app.delete('/api/notes/:id', (req, res) => {
   // Update notes
   notes = notes.filter(note => note.id !== id);
   return res.status(204).end();
-})
+});
+
+const generateId = () => {
+  const currentMaxId = notes.length > 0 
+    ? Math.max(...notes.map(note => note.id))
+    : 0;
+
+  return currentMaxId + 1;
+};
+
+// CREATE a note
+app.post('/api/notes', (req, res) => {
+  const body = req.body;
+  if (!body.content) {
+    return res.status(400).json({
+      error: 'content missing'
+    });
+  }
+
+  const newNote = {
+    content: body.content,
+    important: Boolean(body.important) || false,
+    id: generateId()
+  };
+
+  notes = notes.concat(newNote);
+  return res.json(newNote);
+});
 
 const PORT = process.env.PORT || 3001;
 
