@@ -1,7 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import express from 'express';
+// Make sure to import Request, Response, and NextFunction from express
+import express, { NextFunction, Request, Response } from 'express';
 import toNewNote from '../utils/notes';
 const app  = express();
 
