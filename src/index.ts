@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import toNewNote from '../utils/notes';
 const app  = express();
 
 app.use(express.json());
@@ -63,21 +64,21 @@ const generateId = () => {
 
 // CREATE a note
 app.post('/api/notes', (req, res) => {
-  const body = req.body;
-  if (!body.content) {
-    return res.status(400).json({
-      error: 'content missing'
-    });
+  try {
+    const validatedNote = toNewNote(req.body);
+    const newNote = {
+      ...validatedNote,
+      id: generateId()
+    };
+    notes = notes.concat(newNote);
+    return res.json(newNote);
+  } catch(error: unknown) {
+    let errorMessage = 'Something went wrong!';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    return res.status(400).send(errorMessage);
   }
-
-  const newNote = {
-    content: body.content,
-    important: Boolean(body.important) || false,
-    id: generateId()
-  };
-
-  notes = notes.concat(newNote);
-  return res.json(newNote);
 });
 
 const PORT = process.env.PORT || 3001;
