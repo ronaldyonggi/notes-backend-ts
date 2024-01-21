@@ -97,6 +97,16 @@ app.post('/api/notes', (req, res) => {
   }
 });
 
+// Catch request to all other non-existent routes
+const unknownEndpoint = (_req: Request, res: Response) => {
+  res.status(404).send({
+    error: 'unknown endpoint'
+  });
+};
+
+app.use(unknownEndpoint);
+
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
