@@ -1,4 +1,4 @@
-import { NewNote } from '../src/types';
+import { NewNote } from '../src/types/notes';
 import { isString } from './utils';
 
 // String Parser
