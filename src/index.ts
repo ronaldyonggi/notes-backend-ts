@@ -8,6 +8,21 @@ const app  = express();
 
 app.use(express.json());
 
+
+// requestLogger middleware
+const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
+  console.log('Method: ', req.method);
+  if (req.path) {
+    console.log('Path: ', req.path);
+  }
+  console.log('Body: ', req.body);
+  console.log('---');
+  next();
+};
+
+app.use(requestLogger);
+
+
 let notes = [
   {
     id: 1,
