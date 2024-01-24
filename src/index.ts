@@ -3,10 +3,12 @@ dotenv.config();
 
 // Make sure to import Request, Response, and NextFunction from express
 import express, { NextFunction, Request, Response } from 'express';
+import cors from 'cors';
 import toNewNote from '../utils/notes';
 const app  = express();
 
 app.use(express.json());
+app.use(cors())
 
 
 // requestLogger middleware
