@@ -72,32 +72,29 @@ app.delete('/api/notes/:id', (req, res) => {
   return res.status(204).end();
 });
 
-const generateId = () => {
-  const currentMaxId = notes.length > 0 
-    ? Math.max(...notes.map(note => note.id))
-    : 0;
-
-  return currentMaxId + 1;
-};
 
 // CREATE a note
 app.post('/api/notes', (req, res) => {
-  try {
-    const validatedNote = toNewNote(req.body);
-    const newNote = {
-      ...validatedNote,
-      id: generateId()
-    };
-    notes = notes.concat(newNote);
-    return res.json(newNote);
-  } catch(error: unknown) {
-    let errorMessage = 'Something went wrong!';
-    if (error instanceof Error) {
-      errorMessage += ' Error: ' + error.message;
-    }
-    return res.status(400).send(errorMessage);
-  }
+  const validatedNote = toNewNote(req.body);
+
+  const newNote = new NoteModel({
+    ...validatedNote
+  });
+
+  newNote
+    .save()
+    .then(savedNote => {
+      return res.json(savedNote);
+    })
+    .catch((error: unknown) => {
+      let errorMessage = 'Something went wrong!';
+      if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+      }
+      return res.status(400).send(errorMessage);
+    });
 });
+
 
 // Catch request to all other non-existent routes
 const unknownEndpoint = (_req: Request, res: Response) => {
@@ -107,7 +104,6 @@ const unknownEndpoint = (_req: Request, res: Response) => {
 };
 
 app.use(unknownEndpoint);
-
 
 const PORT = process.env.PORT || 3001;
 
