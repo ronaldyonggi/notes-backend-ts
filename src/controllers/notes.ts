@@ -37,3 +37,24 @@ const deleteNote = (req: Request, res: Response, next: NextFunction) => {
     .then(() => res.status(204).end())
     .catch(error => next(error));
 };
+
+// UPDATE a note
+const updateNote = (req: Request, res: Response, next: NextFunction) => {
+  const { content, important } = toNewNote(req.body);
+
+  const toUpdateNote = {
+    content, important
+  };
+
+  NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true})
+    .then(updatedNote => res.json(updatedNote))
+    .catch(error => next(error));
+};
+
+export default {
+  getAllNotes,
+  getNote,
+  createNote,
+  deleteNote,
+  updateNote
+};
