@@ -17,3 +17,16 @@ const getNote = (req: Request, res: Response, next: NextFunction) => {
     })
     .catch(error => next(error));
 };
+
+// CREATE a new note
+const createNote = (req: Request, res: Response, next: NextFunction) => {
+  const validatedNote = toNewNote(req.body);
+
+  const newNote = new NoteModel({
+    ...validatedNote
+  });
+
+  newNote.save()
+    .then(savedNote => res.json(savedNote))
+    .catch(error => next(error));
+};
