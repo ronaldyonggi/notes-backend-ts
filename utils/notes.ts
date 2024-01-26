@@ -1,4 +1,4 @@
-import { NewNote } from '../src/types/notes';
+import { Note } from '../src/types/notes';
 import { isString } from './utils';
 
 // String Parser
@@ -18,7 +18,7 @@ const parseBoolean = (str: unknown): boolean => {
 };
 
 // toNewNote
-const toNewNote = (object: unknown): NewNote => {
+const toNewNote = (object: unknown): Note => {
   if (!object || typeof object !== 'object') {
     throw new Error('Incorrect or missing data');
   }
