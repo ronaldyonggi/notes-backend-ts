@@ -30,3 +30,10 @@ const createNote = (req: Request, res: Response, next: NextFunction) => {
     .then(savedNote => res.json(savedNote))
     .catch(error => next(error));
 };
+
+// DELETE a note
+const deleteNote = (req: Request, res: Response, next: NextFunction) => {
+  NoteModel.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204).end())
+    .catch(error => next(error));
+};
