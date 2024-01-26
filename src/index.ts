@@ -5,6 +5,7 @@ dotenv.config();
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import toNewNote from '../utils/notes';
+import NoteModel from './models/note';
 const app  = express();
 
 app.use(express.json());
@@ -23,7 +24,6 @@ const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
 };
 
 app.use(requestLogger);
-
 
 let notes = [
   {
@@ -55,13 +55,13 @@ app.get('/api/notes', (_req, res) => {
 
 // GET a single note
 app.get('/api/notes/:id', (req, res) => {
-  const id  = Number(req.params.id);
-  const matchedNote = notes.find(note => note.id === id);
-  if (matchedNote) {
-    return res.json(matchedNote);
-  } else {
-    return res.status(404).end();
-  }
+  NoteModel.findById(req.params.id)
+    .then(note => res.json(note))
+    .catch((error: unknown) => {
+      if (error instanceof Error) {
+        throw new Error('Error fetching a note!');
+      }
+    });
 });
 
 // DELETE a note
