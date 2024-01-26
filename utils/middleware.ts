@@ -11,3 +11,11 @@ const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
   console.log('---');
   next();
 };
+
+// Catch requests that goes to all other non-existent routes
+const unknownEndpoint = (_req: Request, res: Response) => {
+  return res.status(404).send({
+    error: 'unknown endpoint'
+  });
+};
+
