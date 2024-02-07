@@ -1,10 +1,10 @@
-import config from '../utils/config';
 import express from 'express';
 import cors from 'cors';
 import notesRouter from './routes/noteRouter';
 import mongoose from 'mongoose';
-import logger from '../utils/logger';
-import middleware from '../utils/middleware';
+import logger from './utils/logger';
+import config from './utils/config';
+import middleware from './utils/middleware';
 
 // Initialize express app
 const app  = express();
