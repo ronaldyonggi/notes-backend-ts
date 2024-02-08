@@ -12,7 +12,7 @@ const requestLogger = ({req, next}: ExpressParams) => {
   next();
 };
 
-// Catch requests that goes to all other non-existent routes
+// Catch requests to non-existing routes
 const unknownEndpoint = ({res}: ExpressParams) => {
   return res.status(404).send({
     error: 'unknown endpoint'
