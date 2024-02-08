@@ -51,7 +51,7 @@ const updateNote = ({req, res, next}: ExpressParams) => {
     .catch(error => next(error));
 };
 
-export {
+export default {
   getAllNotes,
   getNote,
   createNote,
