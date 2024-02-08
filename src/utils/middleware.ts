@@ -23,13 +23,14 @@ const unknownEndpoint = ({res}: ExpressParams) => {
 const errorHandler = ({error, res, next}: ExpressParams) => {
   logger.error(error.message);
 
-  if (error.name === 'CastError') {
-    return res.status(400).send({ error: 'malformatted id'});
-  } else if (error.name === 'ValidationError') {
-    return res.status(400).json({ error: error.message});
+  switch (error.name){
+    case 'CastError':
+      return res.status(400).send({ error: 'provided id format is incorrect'});
+    case 'ValidationError':
+      return res.status(400).json({ error: error.message });
+    default:
+      return next(error);
   }
-
-  return next(error);
 };
 
 export default {
