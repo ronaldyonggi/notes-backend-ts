@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { ExpressParams } from '../types/expressParams';
 import logger from './logger';
 
 // requestLogger middleware
-const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
+const requestLogger = ({req, next}: ExpressParams) => {
   console.log('Method: ', req.method);
   if (req.path) {
     console.log('Path: ', req.path);
@@ -13,14 +13,14 @@ const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
 };
 
 // Catch requests that goes to all other non-existent routes
-const unknownEndpoint = (_req: Request, res: Response) => {
+const unknownEndpoint = ({res}: ExpressParams) => {
   return res.status(404).send({
     error: 'unknown endpoint'
   });
 };
 
 // Error handler
-const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunction) => {
+const errorHandler = ({error, res, next}: ExpressParams) => {
   logger.error(error.message);
 
   if (error.name === 'CastError') {
