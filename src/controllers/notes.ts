@@ -1,16 +1,16 @@
+import { NextFunction, Request, Response } from 'express';
 import NoteModel from '../models/note';
-import { ExpressParams } from '../types/expressParams';
 import toNewNote from '../utils/utils';
 
 // GET all notes
-const getAllNotes =  ({res, next}: ExpressParams) => {
+const getAllNotes =  (_req: Request, res: Response, next: NextFunction) => {
   NoteModel.find({})
     .then(notes => res.json(notes))
     .catch(error => next(error) );
 };
 
 // GET a specific note given id
-const getNote = ({req, res, next}: ExpressParams) => {
+const getNote = (req: Request, res: Response, next: NextFunction) => {
   NoteModel.findById(req.params.id)
     .then(note => {
       note ? res.json(note) : res.status(404).json({ error: 'Cannot find note with that id'}).end()
@@ -19,7 +19,7 @@ const getNote = ({req, res, next}: ExpressParams) => {
 };
 
 // CREATE a new note
-const createNote = ({req, res, next}: ExpressParams) => {
+const createNote = (req: Request, res: Response, next: NextFunction) => {
   const validatedNote = toNewNote(req.body);
 
   const newNote = new NoteModel({
@@ -32,14 +32,14 @@ const createNote = ({req, res, next}: ExpressParams) => {
 };
 
 // DELETE a note
-const deleteNote = ({req, res, next}: ExpressParams) => {
+const deleteNote = (req: Request, res: Response, next: NextFunction) => {
   NoteModel.findByIdAndDelete(req.params.id)
     .then(() => res.status(204).end())
     .catch(error => next(error));
 };
 
 // UPDATE a note
-const updateNote = ({req, res, next}: ExpressParams) => {
+const updateNote = (req: Request, res: Response, next: NextFunction) => {
   const { content, important } = toNewNote(req.body);
 
   const toUpdateNote = {
