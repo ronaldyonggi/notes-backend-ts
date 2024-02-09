@@ -1,8 +1,8 @@
-import { ExpressParams } from '../types/expressParams';
+import { NextFunction, Request, Response } from 'express';
 import logger from './logger';
 
 // requestLogger middleware
-const requestLogger = ({req, next}: ExpressParams) => {
+const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
   console.log('Method: ', req.method);
   if (req.path) {
     console.log('Path: ', req.path);
@@ -13,14 +13,14 @@ const requestLogger = ({req, next}: ExpressParams) => {
 };
 
 // Catch requests to non-existing routes
-const unknownEndpoint = ({res}: ExpressParams) => {
+const unknownEndpoint = (_req: Request, res: Response) => {
   return res.status(404).send({
     error: 'unknown endpoint'
   });
 };
 
 // Error handler
-const errorHandler = ({error, res, next}: ExpressParams) => {
+const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunction) => {
   logger.error(error.message);
 
   switch (error.name){
