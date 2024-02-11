@@ -1,0 +1,8 @@
+
+PUT http://localhost:3001/api/notes/65c6b6a225974b8b2aa95eda
+Content-Type: application/json
+
+{
+  "content": "cda",
+  "important": true
+}
