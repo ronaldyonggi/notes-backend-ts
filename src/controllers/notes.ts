@@ -46,7 +46,7 @@ const updateNote = (req: Request, res: Response, next: NextFunction) => {
     content, important
   };
 
-  NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true})
+  NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true, runValidators: true, context: 'query' })
     .then(updatedNote => res.json(updatedNote))
     .catch(error => next(error));
 };
