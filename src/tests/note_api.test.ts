@@ -10,6 +10,11 @@ test('notes are returned as json', async () => {
     .expect('Content-Type', /application\/json/);
 }, 100000);
 
+test('there are two notes', async () => {
+  const res = await api.get('/api/notes')
+  expect(res.body).toHaveLength(2);
+}, 100000)
+
 afterAll( async () => {
   await mongoose.connection.close();
 });
