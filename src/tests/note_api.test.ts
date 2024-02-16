@@ -3,6 +3,17 @@ import app from '../app';
 import supertest from 'supertest';
 const api = supertest(app);
 
+const initialNotes = [
+  {
+    content: 'HTML is easy',
+    important: false
+  },
+  {
+    content: 'Browser can execute only JavaScript',
+    important: true
+  }
+];
+
 test('notes are returned as json', async () => {
   await api
     .get('/api/notes')
