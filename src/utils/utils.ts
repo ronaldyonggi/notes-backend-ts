@@ -24,7 +24,7 @@ const parseBoolean = (str: unknown): boolean => {
 // toNewNote
 const toNewNote = (object: unknown): NewNote => {
   if (!object || typeof object !== 'object') {
-    throw new Error('Incorrect or missing data');
+    throw new Error('TypeScript toNewNote error: incorrect or missing data');
   }
 
   if ('content' in object) {
@@ -36,7 +36,7 @@ const toNewNote = (object: unknown): NewNote => {
     return newNote;
   }
 
-  throw new Error('Invalid input data!');
+  throw new Error('TypeScript toNewNote error: invalid input data!');
 };
 
 export default toNewNote;
