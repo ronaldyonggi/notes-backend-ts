@@ -23,12 +23,12 @@ test('notes are returned as json', async () => {
 }, 100000);
 
 test('there are two notes', async () => {
-  const res = await api.get('/api/notes')
+  const res = await api.get('/api/notes');
   expect(res.body).toHaveLength(2);
 }, 100000);
 
 test('the first note is about HTTP methods', async () => {
-  const res = await api.get('/api/notes')
+  const res = await api.get('/api/notes');
   expect(res.body[0].content).toBe('HTML is easy');
 }, 100000);
 
