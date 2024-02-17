@@ -40,6 +40,10 @@ test('the first note is about HTTP methods', async () => {
   expect(res.body[0].content).toBe('HTML is easy');
 }, 100000);
 
+test('The number of notes returned in DB matches the number of notes in initialNotes', async () => {
+  const res = await api.get('/api/notes');
+  expect(res.body).toHaveLength(initialNotes.length);
+});
 
 afterAll( async () => {
   await mongoose.connection.close();
