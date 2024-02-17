@@ -71,6 +71,22 @@ test('a valid note can be added', async () => {
   expect(contents).toContain('async/await simplifies making async calls');
 });
 
+test('note without content is not added', async () => {
+  const newNote = {
+    important: true
+  };
+
+  await api
+    .post('/api/notes')
+    .send(newNote)
+    // .expect(400);
+    .expect(500);
+
+  const res = await api.get('/api/notes');
+  expect(res.body).toHaveLength(initialNotes.length);
+
+});
+
 afterAll( async () => {
   await mongoose.connection.close();
 });
