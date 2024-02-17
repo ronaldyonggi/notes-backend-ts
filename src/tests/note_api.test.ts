@@ -3,24 +3,15 @@ import app from '../app';
 import supertest from 'supertest';
 import NoteModel from '../models/note';
 import { Note } from '../types/note';
+import helper from './test_helper';
 const api = supertest(app);
 
-const initialNotes = [
-  {
-    content: 'HTML is easy',
-    important: false
-  },
-  {
-    content: 'Browser can execute only JavaScript',
-    important: true
-  }
-];
 
 beforeEach(async () => {
   await NoteModel.deleteMany({});
-  let noteObject = new NoteModel(initialNotes[0]);
+  let noteObject = new NoteModel(helper.initialNotes[0]);
   await noteObject.save();
-  noteObject = new NoteModel(initialNotes[1]);
+  noteObject = new NoteModel(helper.initialNotes[1]);
   await noteObject.save();
 });
 
@@ -43,7 +34,7 @@ test('the first note is about HTTP methods', async () => {
 
 test('The number of notes returned in DB matches the number of notes in initialNotes', async () => {
   const res = await api.get('/api/notes');
-  expect(res.body).toHaveLength(initialNotes.length);
+  expect(res.body).toHaveLength(helper.initialNotes.length);
 });
 
 test('a specific note is present within the returned notes', async () => {
@@ -65,7 +56,7 @@ test('a valid note can be added', async () => {
     .expect('Content-Type', /application\/json/);
 
   const res = await api.get('/api/notes');
-  const contents = res.body.map((r: Note) => r.content);
+  expect(notesAtEnd).toHaveLength(helper.initialNotes.length + 1);
 
   expect(res.body).toHaveLength(initialNotes.length + 1);
   expect(contents).toContain('async/await simplifies making async calls');
@@ -83,7 +74,7 @@ test('note without content is not added', async () => {
     .expect(500);
 
   const res = await api.get('/api/notes');
-  expect(res.body).toHaveLength(initialNotes.length);
+  expect(notesAtEnd).toHaveLength(helper.initialNotes.length);
 
 });
 
