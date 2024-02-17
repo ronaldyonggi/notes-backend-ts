@@ -55,10 +55,10 @@ test('a valid note can be added', async () => {
     .expect(201)
     .expect('Content-Type', /application\/json/);
 
-  const res = await api.get('/api/notes');
+  const notesAtEnd = await helper.notesInDb();
   expect(notesAtEnd).toHaveLength(helper.initialNotes.length + 1);
 
-  expect(res.body).toHaveLength(initialNotes.length + 1);
+  const contents = notesAtEnd.map(n => n.content);
   expect(contents).toContain('async/await simplifies making async calls');
 });
 
@@ -73,7 +73,7 @@ test('note without content is not added', async () => {
     // .expect(400);
     .expect(500);
 
-  const res = await api.get('/api/notes');
+  const notesAtEnd = await helper.notesInDb();
   expect(notesAtEnd).toHaveLength(helper.initialNotes.length);
 
 });
