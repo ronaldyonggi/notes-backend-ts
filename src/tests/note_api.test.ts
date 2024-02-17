@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import app from '../app';
 import supertest from 'supertest';
+import NoteModel from '../models/note';
 const api = supertest(app);
 
 const initialNotes = [
@@ -13,6 +14,14 @@ const initialNotes = [
     important: true
   }
 ];
+
+beforeEach(async () => {
+  await NoteModel.deleteMany({});
+  let noteObject = new NoteModel(initialNotes[0]);
+  await noteObject.save();
+  noteObject = new NoteModel(initialNotes[1]);
+  await noteObject.save();
+});
 
 test('notes are returned as json', async () => {
   await api
