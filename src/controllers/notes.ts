@@ -27,7 +27,7 @@ const createNote = (req: Request, res: Response, next: NextFunction) => {
   });
 
   newNote.save()
-    .then(savedNote => res.json(savedNote))
+    .then(savedNote => res.status(201).json(savedNote))
     .catch(error => next(error));
 };
 
