@@ -1,4 +1,4 @@
-import { average } from "./for_testing";
+import { average } from './for_testing';
 
 describe('average', () => {
   test('of one value is the value itself', () => {
