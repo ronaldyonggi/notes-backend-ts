@@ -28,6 +28,12 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
       return res.status(400).send({ error: 'provided id format is incorrect'});
     case 'ValidationError':
       return res.status(400).json({ error: error.message });
+    case 'MongoServerError': {
+      if (error.message.includes('E11000 duplicate key error')) {
+        return res.status(400).json({ error: 'expected `username` to be unique'});
+      }
+      return res.status(400).json({ error: error.message });
+    }
     default:
       return next(error);
   }
