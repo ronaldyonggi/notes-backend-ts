@@ -4,6 +4,7 @@ const router = Router();
 
 // Base router '/'
 router.route('/')
+  .get(userController.getAllUsers)
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   .post(userController.createUser);
 
