@@ -1,9 +1,9 @@
 import { NewNote } from '../types/note';
+import { NewUser } from '../types/user';
 // String type guard
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
-
 
 // String Parser
 const parseString = (str: unknown): string => {
@@ -39,4 +39,25 @@ const toNewNote = (object: unknown): NewNote => {
   throw new Error('TypeScript toNewNote error: invalid input data!');
 };
 
-export default toNewNote;
+const toNewUser = (object: unknown): NewUser => {
+  if (!object || typeof object !== 'object') {
+    throw new Error('TypeScript toNewUser error: incorrect or missing data');
+  }
+
+  if ('username' in object && 'name' in object && 'passwordHash' in object) {
+    const newUser = {
+      username: parseString(object.username),
+      name: parseString(object.name),
+      passwordHash: parseString(object.passwordHash)
+    };
+
+    return newUser;
+  }
+
+  throw new Error('TypeScript toNewUser error: invalid input data!');
+};
+
+export default {
+  toNewNote,
+  toNewUser
+};
