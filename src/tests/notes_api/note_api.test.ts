@@ -1,16 +1,13 @@
 import mongoose from 'mongoose';
-import app from '../app';
-import supertest from 'supertest';
-import NoteModel from '../models/note';
-import { Note } from '../types/note';
+import NoteModel from '../../models/note';
+import { Note } from '../../types/note';
 import helper from './test_helper';
-const api = supertest(app);
-
+import api from '../app_api';
 
 beforeEach(async () => {
   await NoteModel.deleteMany({});
-  const noteObjects = helper.initialNotes.map(n => new NoteModel(n));
-  const promiseArray = noteObjects.map(n => n.save());
+  const noteObjects = helper.initialNotes.map((n) => new NoteModel(n));
+  const promiseArray = noteObjects.map((n) => n.save());
   await Promise.all(promiseArray);
 });
 
@@ -38,14 +35,14 @@ test('The number of notes returned in DB matches the number of notes in initialN
 
 test('a specific note is present within the returned notes', async () => {
   const res = await api.get('/api/notes');
-  const contents: Array<Note['content']> = res.body.map((r : Note) => r.content);
+  const contents: Array<Note['content']> = res.body.map((r: Note) => r.content);
   expect(contents).toContain('Browser can execute only JavaScript');
 });
 
 test('a valid note can be added', async () => {
   const newNote = {
     content: 'async/await simplifies making async calls',
-    important: true
+    important: true,
   };
 
   await api
@@ -57,13 +54,13 @@ test('a valid note can be added', async () => {
   const notesAtEnd = await helper.notesInDb();
   expect(notesAtEnd).toHaveLength(helper.initialNotes.length + 1);
 
-  const contents = notesAtEnd.map(n => n.content);
+  const contents = notesAtEnd.map((n) => n.content);
   expect(contents).toContain('async/await simplifies making async calls');
 });
 
 test('note without content is not added', async () => {
   const newNote = {
-    important: true
+    important: true,
   };
 
   await api
@@ -74,7 +71,6 @@ test('note without content is not added', async () => {
 
   const notesAtEnd = await helper.notesInDb();
   expect(notesAtEnd).toHaveLength(helper.initialNotes.length);
-
 });
 
 test('a specific note can be viewed', async () => {
@@ -93,18 +89,16 @@ test('a note can be deleted', async () => {
   const notesAtStart = await helper.notesInDb();
   const noteToDelete = notesAtStart[0];
 
-  await api
-    .delete(`/api/notes/${noteToDelete.id}`)
-    .expect(204);
+  await api.delete(`/api/notes/${noteToDelete.id}`).expect(204);
 
   const notesAtEnd = await helper.notesInDb();
 
   expect(notesAtEnd).toHaveLength(helper.initialNotes.length - 1);
 
-  const contents = notesAtEnd.map(r => r.content);
+  const contents = notesAtEnd.map((r) => r.content);
   expect(contents).not.toContain(noteToDelete.content);
 });
 
-afterAll( async () => {
+afterAll(async () => {
   await mongoose.connection.close();
 });

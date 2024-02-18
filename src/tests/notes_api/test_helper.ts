@@ -1,19 +1,19 @@
-import NoteModel from '../models/note';
+import NoteModel from '../../models/note';
 
 const initialNotes = [
   {
     content: 'HTML is easy',
-    important: false
+    important: false,
   },
   {
     content: 'Browser can execute only JavaScript',
-    important: true
-  }
+    important: true,
+  },
 ];
 
 const nonExistingId = async () => {
   const note = new NoteModel({
-    content: 'willremovethissoon'
+    content: 'willremovethissoon',
   });
   await note.save();
   await note.deleteOne();
@@ -22,11 +22,11 @@ const nonExistingId = async () => {
 
 const notesInDb = async () => {
   const notes = await NoteModel.find({});
-  return notes.map(n => n.toJSON());
+  return notes.map((n) => n.toJSON());
 };
 
 export default {
   initialNotes,
   nonExistingId,
-  notesInDb
+  notesInDb,
 };
