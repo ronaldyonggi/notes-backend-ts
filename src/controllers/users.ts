@@ -3,6 +3,13 @@ import bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 import ts_utils from '../utils/ts_utils';
 
+// GET all users
+const getAllUsers = (_req: Request, res: Response, next: NextFunction) => {
+  UserModel.find({})
+    .then(users => res.json(users))
+    .catch(error => next(error));
+};
+
 // CREATE a new user
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, name, password } = ts_utils.toNewUser(req.body);
@@ -23,5 +30,6 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 export default {
+  getAllUsers,
   createUser
 };
