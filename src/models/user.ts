@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true // ensure usernames are unique (no duplicate usernames)
+  },
   name: String,
   passwordHash: String,
   notes: [
