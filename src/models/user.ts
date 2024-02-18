@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
 
 // Modify how the object is returned when users are fetched
 userSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
+  transform: (_document, returnedObject: Record<string, string>) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
