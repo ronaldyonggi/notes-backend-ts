@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { Note } from '../types/note';
 
-const noteSchema = new mongoose.Schema<Note>({
+const noteSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
@@ -18,4 +17,4 @@ noteSchema.set('toJSON', {
   },
 });
 
-export default mongoose.model<Note>('Note', noteSchema);
+export default mongoose.model('Note', noteSchema);
