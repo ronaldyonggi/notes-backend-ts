@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import NoteModel from '../models/note';
-import toNewNote from '../utils/utils';
+import ts_utils from '../utils/ts_utils';
 
 // GET all notes
 const getAllNotes =  (_req: Request, res: Response, next: NextFunction) => {
@@ -20,7 +20,7 @@ const getNote = (req: Request, res: Response, next: NextFunction) => {
 
 // CREATE a new note
 const createNote = (req: Request, res: Response, next: NextFunction) => {
-  const validatedNote = toNewNote(req.body);
+  const validatedNote = ts_utils.toNewNote(req.body);
 
   const newNote = new NoteModel({
     ...validatedNote
@@ -40,7 +40,7 @@ const deleteNote = (req: Request, res: Response, next: NextFunction) => {
 
 // UPDATE a note
 const updateNote = (req: Request, res: Response, next: NextFunction) => {
-  const { content, important } = toNewNote(req.body);
+  const { content, important } = ts_utils.toNewNote(req.body);
 
   const toUpdateNote = {
     content, important
