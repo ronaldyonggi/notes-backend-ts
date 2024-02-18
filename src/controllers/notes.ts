@@ -13,7 +13,7 @@ const getAllNotes =  (_req: Request, res: Response, next: NextFunction) => {
 const getNote = (req: Request, res: Response, next: NextFunction) => {
   NoteModel.findById(req.params.id)
     .then(note => {
-      note ? res.json(note) : res.status(404).json({ error: 'Cannot find note with that id'}).end()
+      note ? res.json(note) : res.status(404).json({ error: 'Cannot find note with that id'}).end();
     })
     .catch(error => next(error));
 };
