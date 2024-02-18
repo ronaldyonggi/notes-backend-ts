@@ -44,11 +44,11 @@ const toNewUser = (object: unknown): NewUser => {
     throw new Error('TypeScript toNewUser error: incorrect or missing data');
   }
 
-  if ('username' in object && 'name' in object && 'passwordHash' in object) {
+  if ('username' in object && 'name' in object && 'password' in object) {
     const newUser = {
       username: parseString(object.username),
       name: parseString(object.name),
-      passwordHash: parseString(object.passwordHash)
+      password: parseString(object.password)
     };
 
     return newUser;
