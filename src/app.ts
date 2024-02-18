@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import notesRouter from './routes/noteRouter';
+import usersRouter from './routes/userRouter'
 import mongoose from 'mongoose';
 import logger from './utils/logger';
 import config from './utils/config';
@@ -28,6 +29,9 @@ app.use(middleware.requestLogger);
 
 // Set up routing for notes
 app.use('/api/notes', notesRouter);
+
+// Set up routing for users
+app.use('/api/users', usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
