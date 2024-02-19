@@ -6,8 +6,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true // ensure usernames are unique (no duplicate usernames)
   },
-  name: String,
-  passwordHash: String,
+  name: {
+    type: String,
+    required: true
+  },
+  passwordHash: {
+    type: String,
+    required: true
+  },
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
