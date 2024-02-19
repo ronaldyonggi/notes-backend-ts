@@ -27,13 +27,14 @@ const validateToNewNote = (object: unknown) => {
     throw new Error('TypeScript validateToNewNote error: incorrect or missing data');
   }
 
-  if ('content' in object) {
-    const newNote = {
+  if ('content' in object && 'userId' in object) {
+    const validatedObject = {
       content: parseString(object.content),
       important: 'important' in object ? parseBoolean(object.important) : false,
+      userId: parseString(object.userId)
     };
 
-    return newNote;
+    return validatedObject;
   }
 
   throw new Error('TypeScript validateToNewNote error: invalid input data!');
