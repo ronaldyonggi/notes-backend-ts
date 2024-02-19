@@ -5,7 +5,9 @@ import ts_utils from '../utils/ts_utils';
 
 // GET all users
 const getAllUsers = async (_req: Request, res: Response) => {
-  const users = await UserModel.find({}).populate('notes');
+  const users = await UserModel
+    .find({})
+    .populate('notes', { user: 0});
   res.json(users);
 };
 
