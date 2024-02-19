@@ -22,7 +22,7 @@ const parseBoolean = (str: unknown): boolean => {
 };
 
 // Validate request body to convert to object containing properties required to create a new note
-const validateToNewNote = (object: unknown) => {
+const validateToNewNote = (object: unknown): NewNote => {
   if (!object || typeof object !== 'object') {
     throw new Error('TypeScript validateToNewNote error: incorrect or missing data');
   }
