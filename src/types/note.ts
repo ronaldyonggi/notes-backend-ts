@@ -1,7 +1,8 @@
 export interface Note {
     id: string,
     content: string,
-    important: boolean
+    important: boolean,
+    user: string
 }
 
 export interface NewNote {
