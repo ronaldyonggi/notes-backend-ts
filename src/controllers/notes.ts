@@ -19,7 +19,7 @@ const getNote = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // CREATE a new note
-const createNote = (req: Request, res: Response, next: NextFunction) => {
+const createNote = async (req: Request, res: Response) => {
   const validatedNote = ts_utils.toNewNote(req.body);
 
   const newNote = new NoteModel({
