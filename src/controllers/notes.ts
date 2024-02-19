@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import NoteModel from '../models/note';
 import ts_utils from '../utils/ts_utils';
+import UserModel from '../models/user';
 
 // GET all notes
 const getAllNotes =  (_req: Request, res: Response, next: NextFunction) => {
@@ -20,15 +21,26 @@ const getNote = (req: Request, res: Response, next: NextFunction) => {
 
 // CREATE a new note
 const createNote = async (req: Request, res: Response) => {
-  const validatedNote = ts_utils.toNewNote(req.body);
+  const {content, important, userId} = ts_utils.validateToNewNote(req.body);
 
-  const newNote = new NoteModel({
-    ...validatedNote
-  });
+  const user = await UserModel.findById(userId);
 
-  newNote.save()
-    .then(savedNote => res.status(201).json(savedNote))
-    .catch(error => next(error));
+  if (user) {
+    const newNote = new NoteModel({
+      content,
+      important: important ? false: important,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      user: user.id
+    });
+
+    const savedNote = await newNote.save();
+    user.notes = user.notes.concat(savedNote._id);
+    await user.save();
+    return res.status(201).json(savedNote);
+  }
+
+  return res.status(400).json({ error: 'user not found'});
+
 };
 
 // DELETE a note
@@ -39,22 +51,22 @@ const deleteNote = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // UPDATE a note
-const updateNote = (req: Request, res: Response, next: NextFunction) => {
-  const { content, important } = ts_utils.toNewNote(req.body);
+// const updateNote = (req: Request, res: Response, next: NextFunction) => {
+//   const { content, important } = ts_utils.toNewNote(req.body);
 
-  const toUpdateNote = {
-    content, important
-  };
+//   const toUpdateNote = {
+//     content, important
+//   };
 
-  NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true, runValidators: true, context: 'query' })
-    .then(updatedNote => res.json(updatedNote))
-    .catch(error => next(error));
-};
+//   NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true, runValidators: true, context: 'query' })
+//     .then(updatedNote => res.json(updatedNote))
+//     .catch(error => next(error));
+// };
 
 export default {
   getAllNotes,
   getNote,
   createNote,
   deleteNote,
-  updateNote
+  // updateNote
 };
