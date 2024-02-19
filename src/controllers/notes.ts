@@ -4,10 +4,11 @@ import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
 
 // GET all notes
-const getAllNotes =  (_req: Request, res: Response, next: NextFunction) => {
-  NoteModel.find({})
-    .then(notes => res.json(notes))
-    .catch(error => next(error) );
+const getAllNotes = async (_req: Request, res: Response ) => {
+  const notes = await NoteModel
+    .find({})
+    .populate('user' ,{ notes: 0 });
+  res.json(notes);
 };
 
 // GET a specific note given id
