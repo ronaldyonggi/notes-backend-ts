@@ -4,10 +4,9 @@ import UserModel from '../models/user';
 import ts_utils from '../utils/ts_utils';
 
 // GET all users
-const getAllUsers = (_req: Request, res: Response, next: NextFunction) => {
-  UserModel.find({})
-    .then(users => res.json(users))
-    .catch(error => next(error));
+const getAllUsers = async (_req: Request, res: Response) => {
+  const users = await UserModel.find({}).populate('notes');
+  res.json(users);
 };
 
 // CREATE a new user
