@@ -21,10 +21,10 @@ const parseBoolean = (str: unknown): boolean => {
   return str;
 };
 
-// toNewNote
-const toNewNote = (object: unknown): NewNote => {
+// Validate request body to convert to object containing properties required to create a new note
+const validateToNewNote = (object: unknown) => {
   if (!object || typeof object !== 'object') {
-    throw new Error('TypeScript toNewNote error: incorrect or missing data');
+    throw new Error('TypeScript validateToNewNote error: incorrect or missing data');
   }
 
   if ('content' in object) {
@@ -36,7 +36,7 @@ const toNewNote = (object: unknown): NewNote => {
     return newNote;
   }
 
-  throw new Error('TypeScript toNewNote error: invalid input data!');
+  throw new Error('TypeScript validateToNewNote error: invalid input data!');
 };
 
 const toNewUser = (object: unknown): NewUser => {
@@ -58,6 +58,6 @@ const toNewUser = (object: unknown): NewUser => {
 };
 
 export default {
-  toNewNote,
+  validateToNewNote,
   toNewUser
 };
