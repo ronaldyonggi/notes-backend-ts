@@ -3,6 +3,7 @@ import 'express-async-errors';
 import cors from 'cors';
 import notesRouter from './routes/noteRouter';
 import usersRouter from './routes/userRouter';
+import loginRouter from './routes/loginRouter';
 import mongoose from 'mongoose';
 import logger from './utils/logger';
 import config from './utils/config';
@@ -33,6 +34,9 @@ app.use('/api/notes', notesRouter);
 
 // Set up routing for users
 app.use('/api/users', usersRouter);
+
+// Set up routing for login
+app.use('/api/login', loginRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
