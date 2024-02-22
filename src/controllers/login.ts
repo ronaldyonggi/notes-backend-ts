@@ -26,7 +26,11 @@ const loginUser = async (req: Request, res: Response) => {
     id: user._id
   };
 
-  const token = jwt.sign(userForToken, config.SECRET as string);
+  const token = jwt.sign(
+    userForToken, 
+    config.SECRET as string,
+    { expiresIn: 30}
+  );
 
   return res
     .status(200)
