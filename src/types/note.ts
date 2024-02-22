@@ -5,8 +5,4 @@ export interface Note {
     user: string
 }
 
-export interface NewNote {
-    content: string,
-    important: boolean,
-    userId: string
-}
+export type NewNote = Pick <Note, 'content' | 'important'>;
