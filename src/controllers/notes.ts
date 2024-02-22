@@ -20,6 +20,15 @@ const getNote = (req: Request, res: Response, next: NextFunction) => {
     .catch(error => next(error));
 };
 
+// Get token from request header. This will be used for operations that require valid token attached (e.g. creating notes, delete notes)
+const getTokenFrom = (req: Request) => {
+  const authorization = req.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '');
+  }
+  return null;
+};
+
 // CREATE a new note
 const createNote = async (req: Request, res: Response) => {
   const {content, important, userId} = ts_utils.validateToNewNote(req.body);
