@@ -11,7 +11,7 @@ router.route('/')
 // Routes with id params
 router.route('/:id')
   .get(noteController.getNote)
-  .put(noteController.updateNote)
+  // .put(noteController.updateNote)
   .delete(noteController.deleteNote);
 
 
