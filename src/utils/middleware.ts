@@ -36,7 +36,9 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
       return res.status(400).json({ error: error.message });
     }
     case 'JsonWebTokenError': 
-      return res.status(400).json({ error: 'token missing or invalid' });
+      return res.status(401).json({ error: 'token missing or invalid' });
+    case 'TokenExpiredError':
+      return res.status(401).json({ error: 'token expired' });
     default:
       return next(error);
   }
