@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import NoteModel from '../models/note';
 import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
+import jwt from 'jsonwebtoken';
+import config from '../utils/config';
 
 // GET all notes
 const getAllNotes = async (_req: Request, res: Response ) => {
@@ -31,14 +33,21 @@ const getTokenFrom = (req: Request) => {
 
 // CREATE a new note
 const createNote = async (req: Request, res: Response) => {
-  const {content, important, userId} = ts_utils.validateToNewNote(req.body);
+  const validatedObject = ts_utils.validateToNewNote(req.body);
 
-  const user = await UserModel.findById(userId);
+  // Get token from request
+  const fetchedToken = getTokenFrom(req);
+  if (!fetchedToken) {
+    return res.status(401).json({ error: 'token not found!'});
+  }
+  const decodedToken = ts_utils.validateTokenCreateNewNote(jwt.verify(fetchedToken, config.SECRET as string));
+
+  const user = await UserModel.findById(decodedToken.id);
 
   if (user) {
     const newNote = new NoteModel({
-      content,
-      important: important ? false: important,
+      content: validatedObject.content,
+      important: validatedObject.important ? validatedObject.important : false,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       user: user.id
     });
