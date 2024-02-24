@@ -29,7 +29,7 @@ const loginUser = async (req: Request, res: Response) => {
   const token = jwt.sign(
     userForToken, 
     config.SECRET as string,
-    { expiresIn: 30}
+    { expiresIn: 60 * 60}
   );
 
   return res
