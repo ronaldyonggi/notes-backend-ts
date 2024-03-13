@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Request, Response } from 'express';
 import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
+import { Router } from 'express';
+
+const loginRouter = Router();
 
 // Log in user
-const loginUser = async (req: Request, res: Response) => {
+
+loginRouter.post('/', async (req: Request, res: Response) => {
   const { username, password } = ts_utils.validateLoginRequest(req.body);
 
   const user = await UserModel.findOne({ username });
@@ -40,8 +45,6 @@ const loginUser = async (req: Request, res: Response) => {
       name: user.name
     });
 
-};
+});
 
-export default {
-  loginUser
-};
+export default loginRouter;

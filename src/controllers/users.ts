@@ -1,18 +1,22 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 import ts_utils from '../utils/ts_utils';
+import { Router } from 'express';
+
+const usersRouter = Router();
 
 // GET all users
-const getAllUsers = async (_req: Request, res: Response) => {
+usersRouter.get('/', async (_req: Request, res: Response) => {
   const users = await UserModel
     .find({})
     .populate('notes', { user: 0});
   res.json(users);
-};
+});
 
 // CREATE a new user
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
+usersRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
   const { username, name, password } = ts_utils.toNewUser(req.body);
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
@@ -28,9 +32,6 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 
-};
+});
 
-export default {
-  getAllUsers,
-  createUser
-};
+export default usersRouter;

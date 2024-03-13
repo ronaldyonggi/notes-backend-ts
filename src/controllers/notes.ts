@@ -1,26 +1,30 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { NextFunction, Request, Response } from 'express';
 import NoteModel from '../models/note';
 import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
+import { Router } from 'express';
+
+const notesRouter = Router();
 
 // GET all notes
-const getAllNotes = async (_req: Request, res: Response ) => {
+notesRouter.get('/', async (_req: Request, res: Response ) => {
   const notes = await NoteModel
     .find({})
     .populate('user' ,{ notes: 0 });
   res.json(notes);
-};
+});
 
 // GET a specific note given id
-const getNote = (req: Request, res: Response, next: NextFunction) => {
+notesRouter.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   NoteModel.findById(req.params.id)
     .then(note => {
       note ? res.json(note) : res.status(404).json({ error: 'Cannot find note with that id'}).end();
     })
     .catch(error => next(error));
-};
+});
 
 // Get token from request header. This will be used for operations that require valid token attached (e.g. creating notes, delete notes)
 const getTokenFrom = (req: Request) => {
@@ -32,7 +36,7 @@ const getTokenFrom = (req: Request) => {
 };
 
 // CREATE a new note
-const createNote = async (req: Request, res: Response) => {
+notesRouter.post('/', async (req: Request, res: Response) => {
   const validatedObject = ts_utils.validateToNewNote(req.body);
 
   // Get token from request
@@ -59,15 +63,14 @@ const createNote = async (req: Request, res: Response) => {
   }
 
   return res.status(400).json({ error: 'user not found'});
-
-};
+});
 
 // DELETE a note
-const deleteNote = (req: Request, res: Response, next: NextFunction) => {
-  NoteModel.findByIdAndDelete(req.params.id)
-    .then(() => res.status(204).end())
-    .catch(error => next(error));
-};
+// const deleteNote = (req: Request, res: Response, next: NextFunction) => {
+//   NoteModel.findByIdAndDelete(req.params.id)
+//     .then(() => res.status(204).end())
+//     .catch(error => next(error));
+// };
 
 // UPDATE a note
 // const updateNote = (req: Request, res: Response, next: NextFunction) => {
@@ -82,10 +85,4 @@ const deleteNote = (req: Request, res: Response, next: NextFunction) => {
 //     .catch(error => next(error));
 // };
 
-export default {
-  getAllNotes,
-  getNote,
-  createNote,
-  deleteNote,
-  // updateNote
-};
+export default notesRouter;

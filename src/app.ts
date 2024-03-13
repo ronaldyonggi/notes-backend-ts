@@ -1,9 +1,10 @@
 import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
-import notesRouter from './routes/noteRouter';
-import usersRouter from './routes/userRouter';
-import loginRouter from './routes/loginRouter';
+import notesRouter from './controllers/notes';
+import usersRouter from './controllers/users';
+import loginRouter from './controllers/login';
+import testingRouter from './controllers/testing';
 import mongoose from 'mongoose';
 import logger from './utils/logger';
 import config from './utils/config';
