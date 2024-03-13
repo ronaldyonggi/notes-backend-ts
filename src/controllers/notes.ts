@@ -17,12 +17,11 @@ notesRouter.get('/', async (_req: Request, res: Response ) => {
 });
 
 // GET a specific note given id
-notesRouter.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-  NoteModel.findById(req.params.id)
-    .then(note => {
-      note ? res.json(note) : res.status(404).json({ error: 'Cannot find note with that id'}).end();
-    })
-    .catch(error => next(error));
+notesRouter.get('/:id', async (req: Request, res: Response) => {
+  const matchingNote = await NoteModel.findById(req.params.id);
+  matchingNote
+    ? res.json(matchingNote)
+    : res.status(404).json({ error: 'Cannot find note with that id'}).end();
 });
 
 // Get token from request header. This will be used for operations that require valid token attached (e.g. creating notes, delete notes)
