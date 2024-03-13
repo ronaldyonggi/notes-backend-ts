@@ -25,6 +25,7 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     });
   }
 
+  // This userForToken will be used for token digital signature
   const userForToken = {
     username: user.username,
     id: user._id
