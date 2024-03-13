@@ -24,15 +24,6 @@ notesRouter.get('/:id', async (req: Request, res: Response) => {
     : res.status(404).json({ error: 'Cannot find note with that id'}).end();
 });
 
-// Get token from request header. This will be used for operations that require valid token attached (e.g. creating notes, delete notes)
-const getTokenFrom = (req: Request) => {
-  const authorization = req.get('authorization');
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '');
-  }
-  return null;
-};
-
 // CREATE a new note
 notesRouter.post('/', async (req: Request, res: Response) => {
   const validatedObject = ts_utils.validateNewNote(req.body);
