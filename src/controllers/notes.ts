@@ -29,11 +29,11 @@ notesRouter.post('/', async (req: Request, res: Response) => {
   const validatedObject = ts_utils.validateNewNote(req.body);
 
   // Get token from request
-  const fetchedToken = getTokenFrom(req);
-  if (!fetchedToken) {
+  if (!req.token) {
     return res.status(401).json({ error: 'token not found!'});
   }
-  const decodedToken = ts_utils.validateUserForToken(jwt.verify(fetchedToken, config.SECRET as string));
+
+  const decodedToken = ts_utils.validateUserForToken(jwt.verify(req.token, config.SECRET as string));
 
   const user = await UserModel.findById(decodedToken.id);
 
