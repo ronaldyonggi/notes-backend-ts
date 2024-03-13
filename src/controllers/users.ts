@@ -16,7 +16,7 @@ usersRouter.get('/', async (_req: Request, res: Response) => {
 
 // CREATE a new user
 usersRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
-  const { username, name, password } = ts_utils.toNewUser(req.body);
+  const { username, name, password } = ts_utils.validateNewUser(req.body);
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 

@@ -22,9 +22,9 @@ const parseBoolean = (str: unknown): boolean => {
 };
 
 // Validate request body to convert to object containing properties required to create a new note
-const validateToNewNote = (object: unknown): NewNote => {
+const validateNewNote = (object: unknown): NewNote => {
   if (!object || typeof object !== 'object') {
-    throw new Error('TypeScript validateToNewNote error: incorrect or missing data');
+    throw new Error('TypeScript validateNewNote error: incorrect or missing data');
   }
 
   if ('content' in object) {
@@ -36,7 +36,7 @@ const validateToNewNote = (object: unknown): NewNote => {
     return validatedObject;
   }
 
-  throw new Error('TypeScript validateToNewNote error: invalid input data!');
+  throw new Error('TypeScript validateNewNote error: invalid input data!');
 };
 
 // Validate request body for login user
@@ -57,10 +57,10 @@ const validateLoginRequest = (object: unknown) => {
   throw new Error('TypeScript validateLoginRequest error: invalid input data!');
 };
 
-// Validate token for creating a new note
-const validateTokenCreateNewNote = (object: unknown) => {
+// Validate username and id contained in token
+const validateUserForToken = (object: unknown) => {
   if (!object || typeof object !== 'object') {
-    throw new Error('TypeScript validateTokenCreateNewNote error: incorrect or missing data');
+    throw new Error('TypeScript validateUserForToken error: incorrect or missing data');
   }
 
   if ('username' in object && 'id' in object) {
@@ -72,12 +72,13 @@ const validateTokenCreateNewNote = (object: unknown) => {
     return validatedObject;
   }
 
-  throw new Error('TypeScript validateLoginRequest error: invalid input data!');
+  throw new Error('TypeScript validateUserForToken error: invalid input data!');
 };
 
-const toNewUser = (object: unknown): NewUser => {
+// Validate request for creating a new user
+const validateNewUser = (object: unknown): NewUser => {
   if (!object || typeof object !== 'object') {
-    throw new Error('TypeScript toNewUser error: incorrect or missing data');
+    throw new Error('TypeScript validateNewUser error: incorrect or missing data');
   }
 
   if ('username' in object && 'name' in object && 'password' in object) {
@@ -90,12 +91,12 @@ const toNewUser = (object: unknown): NewUser => {
     return newUser;
   }
 
-  throw new Error('TypeScript toNewUser error: invalid input data!');
+  throw new Error('TypeScript validateNewUser error: invalid input data!');
 };
 
 export default {
-  validateToNewNote,
-  toNewUser,
+  validateNewNote,
   validateLoginRequest,
-  validateTokenCreateNewNote
+  validateUserForToken,
+  validateNewUser
 };
