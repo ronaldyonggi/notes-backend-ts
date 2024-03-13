@@ -1,6 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import logger from './logger';
 
+// If request header Authorization contains a token, sets req.token field to be that token
+const tokenExtractor = (req: Request, _res: Response, next: NextFunction) => {
+  // Retrieve the 'Bearer [token]' field
+  const authorization = req.get('authorization');
+  // If the Bearer [token] field is confirmed exist, set req.token to be the [token] part
+  if (authorization && authorization.startsWith('Bearer ')) {
+    req.token = authorization.replace('Bearer ', '');
+  }
+
+  next();
+};
+
 // requestLogger middleware
 const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
   console.log('Method: ', req.method);
@@ -47,5 +59,6 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
 export default {
   requestLogger,
   unknownEndpoint,
-  errorHandler
+  errorHandler,
+  tokenExtractor
 };
