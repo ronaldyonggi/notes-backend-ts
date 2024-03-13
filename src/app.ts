@@ -29,6 +29,7 @@ app.use(express.static('dist'));
 app.use(express.json());
 
 app.use(middleware.requestLogger);
+app.use(middleware.tokenExtractor);
 
 // Set up routing for notes
 app.use('/api/notes', notesRouter);
