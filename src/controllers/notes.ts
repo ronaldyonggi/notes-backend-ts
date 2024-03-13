@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { NextFunction, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import NoteModel from '../models/note';
 import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
