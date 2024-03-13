@@ -1,10 +1,11 @@
 export {};
 
-// Tells TypeScript that req object has 'path' property
+// Tells TypeScript that req object has 'path' and 'token' property
 declare global {
   namespace Express {
     interface Request {
-      path: string;
+      path: string
+      token: string
     }
   }
 }
