@@ -20,6 +20,10 @@ const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
     console.log('Path: ', req.path);
   }
   console.log('Body: ', req.body);
+  const authorization = req.get('authorization');
+  if (authorization) {
+    console.log('Authorization: ', authorization);
+  }
   console.log('---');
   next();
 };
