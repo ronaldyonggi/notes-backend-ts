@@ -39,6 +39,11 @@ app.use('/api/users', usersRouter);
 // Set up routing for login
 app.use('/api/login', loginRouter);
 
+// Empties DB in testing mode
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', testingRouter);
+}
+
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
