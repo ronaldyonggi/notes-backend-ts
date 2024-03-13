@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import NoteModel from '../models/note';
 import UserModel from '../models/user';
-import { Router } from 'express';
 
 const testingRouter = Router();
 

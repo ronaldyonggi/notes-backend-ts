@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
-import { Router } from 'express';
 
 const loginRouter = Router();
 

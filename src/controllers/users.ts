@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 import ts_utils from '../utils/ts_utils';
-import { Router } from 'express';
 
 const usersRouter = Router();
 

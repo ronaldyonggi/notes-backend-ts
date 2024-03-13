@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import NoteModel from '../models/note';
 import ts_utils from '../utils/ts_utils';
 import UserModel from '../models/user';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
-import { Router } from 'express';
 
 const notesRouter = Router();
 
