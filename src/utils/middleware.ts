@@ -47,6 +47,9 @@ const requestLogger = (req: Request, _res: Response, next: NextFunction) => {
   if (authorization) {
     console.log('Authorization: ', authorization);
   }
+  if (req.user) {
+    console.log('User: ', req.user);
+  }
   console.log('---');
   next();
 };
