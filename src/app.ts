@@ -32,7 +32,8 @@ app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
 
 // Set up routing for notes
-app.use('/api/notes', notesRouter);
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.use('/api/notes', middleware.userExtractor, notesRouter);
 
 // Set up routing for users
 app.use('/api/users', usersRouter);
