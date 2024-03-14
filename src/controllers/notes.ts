@@ -53,11 +53,22 @@ notesRouter.post('/', async (req: Request, res: Response) => {
 });
 
 // DELETE a note
-// const deleteNote = (req: Request, res: Response, next: NextFunction) => {
-//   NoteModel.findByIdAndDelete(req.params.id)
-//     .then(() => res.status(204).end())
-//     .catch(error => next(error));
-// };
+notesRouter.delete('/:id', async (req: Request, res: Response ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const user = req.user;
+  const noteToDelete = await NoteModel.findById(req.params.id);
+
+  if (!noteToDelete) {
+    return res.status(404).json({ error: 'cannot find note with that id'});
+  }
+
+  if (noteToDelete.user!.toString() !== user.id) {
+    return res.status(401).json({ error: 'invalid user!'});
+  } else {
+    await NoteModel.findByIdAndDelete(req.params.id);
+    return res.status(204).end();
+  }
+});
 
 // UPDATE a note
 // const updateNote = (req: Request, res: Response, next: NextFunction) => {
