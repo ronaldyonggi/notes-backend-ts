@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { NextFunction, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 import ts_utils from '../utils/ts_utils';
@@ -15,7 +15,7 @@ usersRouter.get('/', async (_req: Request, res: Response) => {
 });
 
 // CREATE a new user
-usersRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+usersRouter.post('/', async (req: Request, res: Response ) => {
   const { username, name, password } = ts_utils.validateNewUser(req.body);
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
@@ -24,12 +24,8 @@ usersRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
     username, name, passwordHash
   });
 
-  try {
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch(error) {
-    next(error);
-  }
+  const savedUser = await newUser.save();
+  res.status(201).json(savedUser);
 
 });
 
