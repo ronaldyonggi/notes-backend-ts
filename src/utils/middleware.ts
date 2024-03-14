@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import logger from './logger';
+import ts_utils from './ts_utils';
+import jwt from 'jsonwebtoken';
+import config from './config';
+import UserModel from '../models/user';
 
 // If request header Authorization contains a token, sets req.token field to be that token
 const tokenExtractor = (req: Request, _res: Response, next: NextFunction) => {
@@ -11,6 +15,25 @@ const tokenExtractor = (req: Request, _res: Response, next: NextFunction) => {
   }
 
   next();
+};
+
+// Decodes token and finds out which user the token belongs to
+const userExtractor = async (req: Request, res: Response, next: NextFunction) => {
+  // Retrieve token from request, then decode using jwt
+  const decodedToken = ts_utils.validateUserForToken(jwt.verify(req.token, config.SECRET as string));
+
+  // If the decodedToken object doesn't contain id field, then the token is invalid
+  if (!decodedToken.id) {
+    res.status(401).json({ error: 'token invalid' });
+  } else {
+    // Otherwise if token is valid, find user using the decoded token's id
+    const user = await UserModel.findById(decodedToken.id);
+    if (user) {
+      req.user = user;
+    }
+    next();
+  }
+
 };
 
 // requestLogger middleware
@@ -64,5 +87,6 @@ export default {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 };
