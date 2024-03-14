@@ -2,9 +2,6 @@
 import { Request, Response, Router } from 'express';
 import NoteModel from '../models/note';
 import ts_utils from '../utils/ts_utils';
-import UserModel from '../models/user';
-import jwt from 'jsonwebtoken';
-import config from '../utils/config';
 
 const notesRouter = Router();
 
@@ -33,9 +30,7 @@ notesRouter.post('/', async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'token not found!'});
   }
 
-  const decodedToken = ts_utils.validateUserForToken(jwt.verify(req.token, config.SECRET as string));
-
-  const user = await UserModel.findById(decodedToken.id);
+  const user = req.user;
 
   if (user) {
     const newNote = new NoteModel({
