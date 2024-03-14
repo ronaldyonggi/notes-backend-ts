@@ -19,21 +19,22 @@ const tokenExtractor = (req: Request, _res: Response, next: NextFunction) => {
 
 // Decodes token and finds out which user the token belongs to
 const userExtractor = async (req: Request, res: Response, next: NextFunction) => {
-  // Retrieve token from request, then decode using jwt
-  const decodedToken = ts_utils.validateUserForToken(jwt.verify(req.token, config.SECRET as string));
+  if (req.token) {
+    // Retrieve token from request, then decode using jwt
+    const decodedToken = ts_utils.validateUserForToken(jwt.verify(req.token, config.SECRET as string));
 
-  // If the decodedToken object doesn't contain id field, then the token is invalid
-  if (!decodedToken.id) {
-    res.status(401).json({ error: 'token invalid' });
-  } else {
-    // Otherwise if token is valid, find user using the decoded token's id
-    const user = await UserModel.findById(decodedToken.id);
-    if (user) {
-      req.user = user;
+    // If the decodedToken object doesn't contain id field, then the token is invalid
+    if (!decodedToken.id) {
+      res.status(401).json({ error: 'token invalid' });
+    } else {
+      // Otherwise if token is valid, find user using the decoded token's id
+      const user = await UserModel.findById(decodedToken.id);
+      if (user) {
+        req.user = user;
+      }
     }
-    next();
   }
-
+  next();
 };
 
 // requestLogger middleware
