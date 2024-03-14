@@ -71,16 +71,27 @@ notesRouter.delete('/:id', async (req: Request, res: Response ) => {
 });
 
 // UPDATE a note
-// const updateNote = (req: Request, res: Response, next: NextFunction) => {
-//   const { content, important } = ts_utils.toNewNote(req.body);
+notesRouter.put('/:id', async (req: Request, res: Response ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const user = req.user;
+  const noteToUpdate = await NoteModel.findById(req.params.id);
 
-//   const toUpdateNote = {
-//     content, important
-//   };
+  if (!noteToUpdate) {
+    return res.status(404).json({ error: 'cannot find note with that id'});
+  }
 
-//   NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true, runValidators: true, context: 'query' })
-//     .then(updatedNote => res.json(updatedNote))
-//     .catch(error => next(error));
-// };
+  if (noteToUpdate.user!.toString() !== user.id) {
+    return res.status(401).json({ error: 'invalid user!'});
+  }
+  const { content, important } = ts_utils.validateNewNote(req.body);
+
+  const toUpdateNote = {
+    content, important
+  };
+
+  const updatedNote = await NoteModel.findByIdAndUpdate(req.params.id, toUpdateNote, {new: true, runValidators: true, context: 'query' });
+  return res.status(201).json(updatedNote);
+
+});
 
 export default notesRouter;
