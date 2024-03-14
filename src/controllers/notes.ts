@@ -30,6 +30,7 @@ notesRouter.post('/', async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'token not found!'});
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const user = req.user;
 
   if (user) {
@@ -41,7 +42,9 @@ notesRouter.post('/', async (req: Request, res: Response) => {
     });
 
     const savedNote = await newNote.save();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     user.notes = user.notes.concat(savedNote._id);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await user.save();
     return res.status(201).json(savedNote);
   }
